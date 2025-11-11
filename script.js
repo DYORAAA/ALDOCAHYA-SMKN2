@@ -1,4 +1,5 @@
-// JavaScript untuk fungsionalitas
+<script>
+        // JavaScript untuk fungsionalitas
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('input-form');
             const dateInput = document.getElementById('date');
@@ -6,6 +7,7 @@
             const amountInput = document.getElementById('amount');
             const expenseList = document.getElementById('expense-list');
             const totalAmountSpan = document.getElementById('total-amount');
+            const downloadBtn = document.getElementById('download-btn'); // Ambil tombol unduh
 
             let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
@@ -18,7 +20,7 @@
                 localStorage.setItem('expenses', JSON.stringify(expenses));
             };
 
-            // Fungsi untuk memformat angka menjadi mata uang Rupiah
+            // Fungsi untuk memformat angka menjadi mata uang Rupiah (Hanya untuk Tampilan)
             const formatRupiah = (number) => {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -35,7 +37,6 @@
 
             // Fungsi untuk menampilkan daftar pengeluaran
             const renderExpenses = () => {
-                // Urutkan berdasarkan tanggal terbaru
                 expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
                 
                 expenseList.innerHTML = '';
@@ -53,9 +54,9 @@
 
                 renderTotal();
                 
-                // Tambahkan event listener untuk tombol hapus
                 document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', deleteExpense);
+                    // Gunakan event listener yang baru dibuat untuk menghindari masalah 'stale closure'
+                    button.addEventListener('click', deleteExpense); 
                 });
             };
 
@@ -64,7 +65,7 @@
                 e.preventDefault();
 
                 const newExpense = {
-                    id: Date.now(), // ID unik
+                    id: Date.now(),
                     date: dateInput.value,
                     description: descriptionInput.value.trim(),
                     amount: parseFloat(amountInput.value)
@@ -77,48 +78,37 @@
                 // Bersihkan form
                 descriptionInput.value = '';
                 amountInput.value = '';
-                dateInput.value = today; // Kembalikan ke tanggal hari ini
+                dateInput.value = today;
             });
 
             // Fungsi untuk menghapus pengeluaran
             const deleteExpense = (e) => {
                 const index = parseInt(e.target.getAttribute('data-index'));
-                
-                // Karena kita mengurutkan array sebelum merender, kita perlu menghapus item berdasarkan data yang dirender.
-                // Cara yang lebih aman adalah menghapus berdasarkan ID unik
-                const expenseToDelete = expenses[index];
-                
-                // Cari index item yang sebenarnya berdasarkan ID sebelum diurutkan.
-                // Walaupun di contoh ini kita hapus berdasarkan index hasil sort
-                // Cara yang lebih baik untuk aplikasi yang lebih kompleks adalah:
-                // expenses = expenses.filter(expense => expense.id !== expenseToDelete.id);
-                
                 expenses.splice(index, 1);
                 saveExpenses();
                 renderExpenses();
             };
-
-            // Muat dan tampilkan data saat halaman pertama kali dimuat
-            renderExpenses();
-        });
-        // Ambil elemen tombol unduh
-            const downloadBtn = document.getElementById('download-btn');
+            
+            // --- FITUR UNDUH CSV YANG DIPERBAIKI ---
 
             // Fungsi untuk mengubah data array menjadi format CSV
             const convertToCSV = (arr) => {
+                // Header (Kolom)
                 const header = ['Tanggal', 'Deskripsi', 'Jumlah'];
                 const csvRows = [];
                 
-                // Tambahkan header
-                csvRows.push(header.join(';')); // Gunakan semicolon (;) untuk kompatibilitas Excel Indonesia
+                // Tambahkan header, dipisahkan oleh semicolon (;)
+                csvRows.push(header.join(';')); 
 
                 // Tambahkan baris data
                 for (const row of arr) {
+                    const description_clean = `"${row.description.replace(/"/g, '""')}"`;
+                    
                     const values = [
                         row.date,
-                        // Pastikan deskripsi tidak mengandung semicolon (;) yang merusak format CSV
-                        `"${row.description.replace(/"/g, '""')}"`, 
-                        row.amount // Angka tanpa format Rupiah agar bisa dihitung di Excel
+                        description_clean,
+                        // Angka tanpa format Rupiah agar bisa dihitung di Excel
+                        row.amount 
                     ];
                     csvRows.push(values.join(';'));
                 }
@@ -135,19 +125,20 @@
                 
                 const csvString = convertToCSV(expenses);
                 
-                // Membuat Blob dan URL untuk file yang akan diunduh
-                const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
+                // Menggunakan URI Data untuk pengunduhan (lebih simpel)
+                // Menggunakan tipe data text/csv dan encoding UTF-8 untuk mendukung karakter khusus
+                const dataUri = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csvString);
                 
-                // Membuat link tersembunyi dan mengklik link tersebut
+                // Membuat link tersembunyi
                 const a = document.createElement('a');
-                a.setAttribute('hidden', '');
-                a.setAttribute('href', url);
+                a.style.display = 'none'; // Sembunyikan link
+                a.href = dataUri;
                 
                 // Tentukan nama file
-                const today = new Date().toISOString().split('T')[0];
-                a.setAttribute('download', `pengeluaran_${today}.csv`);
+                const todayFormatted = new Date().toISOString().split('T')[0];
+                a.download = `pengeluaran_data_${todayFormatted}.csv`;
                 
+                // Memicu klik dan menghapus elemen
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -155,3 +146,8 @@
 
             // Tambahkan event listener ke tombol unduh
             downloadBtn.addEventListener('click', downloadCSV);
+
+            // Muat dan tampilkan data saat halaman pertama kali dimuat
+            renderExpenses();
+        });
+    </script>
