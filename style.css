@@ -1,0 +1,173 @@
+/* CSS untuk tampilan Biru Estetik */
+:root {
+    /* Palet Warna */
+    --color-primary: #1e88e5; /* Biru Cerah/Royal Blue */
+    --color-secondary: #00bcd4; /* Teal Cerah */
+    --color-background: #f0f4f8; /* Biru Abu-abu Sangat Lembut */
+    --color-card-bg: #ffffff;
+    --color-text: #37474f; /* Navy Gelap */
+    --color-success: #4caf50;
+    --color-danger: #e53935;
+    --color-shadow: rgba(30, 136, 229, 0.2);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 20px;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+    background: var(--color-card-bg);
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--color-shadow);
+}
+
+h1 {
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+h2 {
+    color: var(--color-text);
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+    margin-top: 25px;
+}
+
+/* Gaya Form Input */
+#input-form {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr 1fr 0.8fr;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #e3f2fd; /* Latar belakang form biru muda */
+}
+
+#input-form input {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #bbdefb; /* Border biru lembut */
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+#input-form input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+}
+
+#input-form button {
+    background-color: var(--color-secondary);
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#input-form button:hover {
+    background-color: #00acc1; /* Sedikit lebih gelap */
+}
+
+#input-form button:active {
+    transform: scale(0.98);
+}
+
+/* Gaya Daftar Pengeluaran */
+#expense-list {
+    list-style: none;
+    padding: 0;
+}
+
+#expense-list li {
+    background: var(--color-card-bg);
+    border-left: 5px solid var(--color-primary); /* Garis biru di samping */
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.expense-info strong {
+    display: block;
+    font-size: 1.2em;
+    color: var(--color-primary); /* Jumlah dalam warna biru */
+    font-weight: 700;
+}
+
+.expense-info span {
+    color: #78909c; /* Tanggal dan deskripsi abu-abu */
+    font-size: 0.9em;
+}
+
+.delete-btn {
+    background: var(--color-danger);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+}
+
+/* Gaya Total */
+#total-container {
+    margin-top: 30px;
+    padding: 25px;
+    background: #b3e5fc; /* Latar belakang total biru muda yang menonjol */
+    border-radius: 8px;
+    text-align: right;
+    font-size: 1.3em;
+    font-weight: 500;
+    border: 1px solid var(--color-primary);
+}
+
+#total-container strong {
+    font-size: 1.8em;
+    color: var(--color-primary); /* Total dalam warna biru yang kuat */
+    display: block;
+    margin-top: 5px;
+}
+
+#download-btn {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ff9800; /* Warna Oranye */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#download-btn:hover {
+    background-color: #fb8c00;
+}
