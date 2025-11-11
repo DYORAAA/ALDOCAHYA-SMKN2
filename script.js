@@ -116,12 +116,43 @@
                 return csvRows.join('\n');
             };
 
-            // Fungsi untuk memicu pengunduhan
+                // Fungsi untuk memicu pengunduhan (Menggunakan Blob)
             const downloadCSV = () => {
                 if (expenses.length === 0) {
                     alert('Tidak ada data pengeluaran untuk diunduh.');
                     return;
                 }
+                
+                const csvString = convertToCSV(expenses);
+                
+                // 1. Buat Blob dengan tipe text/csv, termasuk BOM untuk Excel UTF-8
+                const blob = new Blob(['\uFEFF' + csvString], { 
+                    type: 'text/csv;charset=utf-8;' 
+                });
+                
+                // 2. Buat URL dari Blob
+                const url = URL.createObjectURL(blob);
+                
+                // 3. Buat link tersembunyi
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                
+                // Tentukan nama file
+                const todayFormatted = new Date().toISOString().split('T')[0];
+                a.download = `pengeluaran_data_${todayFormatted}.csv`;
+                
+                // 4. Memicu klik
+                document.body.appendChild(a);
+                a.click();
+                
+                // 5. Bersihkan (penting untuk membebaskan memori)
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url); // Hapus URL Blob dari memori browser
+            };
+
+            // Tambahkan event listener ke tombol unduh
+            downloadBtn.addEventListener('click', downloadCSV);
                 
                 const csvString = convertToCSV(expenses);
                 
@@ -151,3 +182,4 @@
             renderExpenses();
         });
     </script>
+
