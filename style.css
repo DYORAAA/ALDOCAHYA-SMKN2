@@ -1,4 +1,4 @@
-/* CSS untuk tampilan Biru Estetik */
+/* CSS untuk tampilan Biru Estetik dan Responsif */
 :root {
     /* Palet Warna */
     --color-primary: #1e88e5; /* Biru Cerah/Royal Blue */
@@ -44,21 +44,21 @@ h2 {
     margin-top: 25px;
 }
 
-/* Gaya Form Input */
+/* Gaya Form Input (Desktop) */
 #input-form {
     display: grid;
-    grid-template-columns: 1.2fr 2fr 1fr 0.8fr;
+    grid-template-columns: 1.2fr 2fr 1fr 0.8fr; /* 4 kolom untuk desktop */
     gap: 15px;
     margin-bottom: 30px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #e3f2fd; /* Latar belakang form biru muda */
+    background-color: #e3f2fd; 
 }
 
 #input-form input {
     padding: 12px;
     border-radius: 6px;
-    border: 1px solid #bbdefb; /* Border biru lembut */
+    border: 1px solid #bbdefb; 
     font-size: 15px;
     transition: border-color 0.3s;
 }
@@ -82,7 +82,7 @@ h2 {
 }
 
 #input-form button:hover {
-    background-color: #00acc1; /* Sedikit lebih gelap */
+    background-color: #00acc1; 
 }
 
 #input-form button:active {
@@ -97,7 +97,7 @@ h2 {
 
 #expense-list li {
     background: var(--color-card-bg);
-    border-left: 5px solid var(--color-primary); /* Garis biru di samping */
+    border-left: 5px solid var(--color-primary);
     margin-bottom: 10px;
     padding: 15px 20px;
     display: flex;
@@ -110,12 +110,12 @@ h2 {
 .expense-info strong {
     display: block;
     font-size: 1.2em;
-    color: var(--color-primary); /* Jumlah dalam warna biru */
+    color: var(--color-primary);
     font-weight: 700;
 }
 
 .expense-info span {
-    color: #78909c; /* Tanggal dan deskripsi abu-abu */
+    color: #78909c; 
     font-size: 0.9em;
 }
 
@@ -128,17 +128,19 @@ h2 {
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.2s;
+    flex-shrink: 0; /* Penting agar tombol tidak mengecil di HP */
+    margin-left: 10px;
 }
 
 .delete-btn:hover {
     background: #c62828;
 }
 
-/* Gaya Total */
+/* Gaya Total & Download */
 #total-container {
     margin-top: 30px;
     padding: 25px;
-    background: #b3e5fc; /* Latar belakang total biru muda yang menonjol */
+    background: #b3e5fc; 
     border-radius: 8px;
     text-align: right;
     font-size: 1.3em;
@@ -148,7 +150,7 @@ h2 {
 
 #total-container strong {
     font-size: 1.8em;
-    color: var(--color-primary); /* Total dalam warna biru yang kuat */
+    color: var(--color-primary); 
     display: block;
     margin-top: 5px;
 }
@@ -158,7 +160,7 @@ h2 {
     width: 100%;
     margin-top: 20px;
     padding: 15px;
-    background-color: #ff9800; /* Warna Oranye */
+    background-color: #ff9800;
     color: white;
     border: none;
     border-radius: 6px;
@@ -170,4 +172,69 @@ h2 {
 
 #download-btn:hover {
     background-color: #fb8c00;
+}
+
+/* ======================================================= */
+/* MEDIA QUERY untuk LAYAR KECIL (Maks. 600px, seperti HP) */
+/* ======================================================= */
+
+@media (max-width: 600px) {
+    
+    body {
+        padding: 10px; /* Padding lebih kecil di HP */
+    }
+
+    .container {
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: none; /* Hilangkan shadow di HP agar terlihat lebih native */
+    }
+
+    /* Form Input: Ubah dari 4 kolom menjadi 1 kolom penuh */
+    #input-form {
+        grid-template-columns: 1fr; 
+        gap: 10px;
+        padding: 15px;
+    }
+
+    /* Tombol 'Tambah' selalu berada di bawah */
+    #input-form button {
+        grid-column: 1 / -1; /* Rentangkan tombol di seluruh kolom */
+    }
+
+    /* Daftar Pengeluaran */
+    #expense-list li {
+        flex-direction: column; /* Ubah tata letak item menjadi vertikal */
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .expense-info {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .expense-info strong {
+        font-size: 1.5em; /* Jumlah lebih besar di HP */
+    }
+    
+    .expense-info span {
+        font-size: 1em;
+    }
+
+    .delete-btn {
+        width: 100%;
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    /* Total */
+    #total-container {
+        text-align: center;
+        font-size: 1.1em;
+    }
+
+    #total-container strong {
+        font-size: 1.5em;
+    }
 }
